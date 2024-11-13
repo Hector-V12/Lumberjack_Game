@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Preferences - Lumberjack Game</title>
+    <link rel="stylesheet" href="../style/preferences.css" />
+    <script src="../components/header.js"></script>
+    <link rel="icon" type="image/png" href="../ressources/img/lumberjack.png" />
+  </head>
+  <body>
+    <custom-header></custom-header>
+    <main>
+      <form id="preferences-form">
+        <h1>Set up your preferences :</h1>
+        <label for="number-of-ufos">Number of UFOs:</label>
+        <select id="number-of-ufos" name="number-of-ufos">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+
+        <label for="game-time">Game Time (seconds):</label>
+        <select id="game-time" name="game-time">
+          <option value="60">60</option>
+          <option value="120">120</option>
+          <option value="180">180</option>
+        </select>
+
+        <button type="button" id="save-preferences">Let's play !</button>
+      </form>
+    </main>
+
+    <script>
+      document
+        .getElementById('save-preferences')
+        .addEventListener('click', function () {
+          const numberOfUfos = document.getElementById('number-of-ufos').value;
+          const gameTime = document.getElementById('game-time').value;
+          console.log(numberOfUfos);
+
+          localStorage.setItem('numberOfTrees', numberOfUfos);
+          localStorage.setItem('gameTime', gameTime);
+
+          alert('Preferences saved, time to play !');
+          window.location.href = 'LumberjackBattle.html';
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - Lumberjack Game</title>
+    <link rel="stylesheet" href="../style/register.css" />
+    <link rel="icon" type="image/png" href="../ressources/img/lumberjack.png" />
+  </head>
+  <body>
+    <custom-header></custom-header>
+
+    <main id="register-page">
+      <section class="register-section">
+        <h1>Register</h1>
+        <p>Create an account to save your scores and access the game.</p>
+
+        <form
+          id="register-form"
+          onsubmit="event.preventDefault(); doRegister();"
+        >
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required />
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="pwd">Password</label>
+          <input type="password" id="pwd" name="password" required />
+
+          <button type="submit" id="btn">Register</button>
+        </form>
+
+        <div id="result" class="error-message"></div>
+      </section>
+    </main>
+
+    <script src="../scripts/register.js"></script>
+    <script src="../components/header.js"></script>
+  </body>
+</html>

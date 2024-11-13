@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Lumberjack Game</title>
+    <link rel="stylesheet" href="../style/login.css" />
+    <link rel="icon" type="image/png" href="../ressources/img/lumberjack.png" />
+  </head>
+  <body id="background">
+    <custom-header></custom-header>
+
+    <main id="login-page">
+      <section class="login-section">
+        <h1>Login</h1>
+        <p>
+          Enter your username and password to access your account and save your
+          scores.
+        </p>
+
+        <form id="login-form" onsubmit="event.preventDefault(); dologin();">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required />
+
+          <label for="pwd">Password</label>
+          <input type="password" id="pwd" name="password" required />
+
+          <button type="submit" id="btn">Login</button>
+        </form>
+
+        <div id="result" class="error-message"></div>
+      </section>
+    </main>
+
+    <script src="../scripts/userlogin.js"></script>
+    <script src="../components/header.js"></script>
+  </body>
+</html>

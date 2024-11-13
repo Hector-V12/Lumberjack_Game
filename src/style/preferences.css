@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background-image: url('../ressources/img/lumberjack_changed.png');
+  background-color: #e0ffe0;
+  background-repeat: repeat;
+  background-size: 30px;
+  animation: moveBackground 50s linear infinite;
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  color: #2f4f4f;
+  opacity: 0;
+  animation: fadeIn 1.5s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+main h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+form {
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 30%;
+  text-align: center;
+}
+
+label {
+  font-size: 1.2em;
+  color: #3b5323;
+  margin-bottom: 0.5rem;
+  display: block;
+  font-weight: bold;
+}
+
+select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+button#save-preferences {
+  background-color: #8b4513;
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+button#save-preferences:hover {
+  background-color: #a0522d;
+}

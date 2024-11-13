@@ -1,0 +1,86 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-image: url('../ressources/img/lumberjack_changed.png');
+  background-color: #e0ffe0;
+  background-repeat: repeat;
+  background-size: 30px;
+  overflow: hidden;
+  position: relative;
+  height: 100vh;
+  animation: moveBackground 50s linear infinite;
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+#missile {
+  position: absolute;
+  bottom: 10px;
+  left: 300px;
+  height: 70px;
+  transition: transform 0.1s;
+}
+
+.ufo {
+  position: absolute;
+  bottom: 550px;
+  left: 0px;
+  width: 60px;
+  transition: transform 0.25s;
+}
+
+#score-container {
+  position: absolute;
+  bottom: 10px;
+  right: 30px;
+  width: 150px;
+  padding: 10px 0;
+  background-color: #3b5323;
+  color: white;
+  text-align: center;
+  font-size: 18pt;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#points {
+  font-size: 18pt;
+  margin-bottom: 5px;
+}
+
+#countdown {
+  font-size: 14pt;
+  color: #ffffff;
+}
+
+@keyframes explode {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+.ufo.hit {
+  animation: explode 0.5s ease-out;
+  opacity: 0;
+}
+
+img {
+  pointer-events: none;
+}

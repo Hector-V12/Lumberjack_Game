@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>UFO Battle Game</title>
+    <link rel="stylesheet" href="../style/lumberjackBattle.css" />
+    <link rel="icon" type="image/png" href="../ressources/img/lumberjack.png" />
+    <script src="../components/header.js"></script>
+  </head>
+  <body>
+    <custom-header></custom-header>
+
+    <div id="score-container">
+      <div id="points">0</div>
+      <div id="countdown">Time: 0</div>
+    </div>
+
+    <img
+      id="missile"
+      src="../ressources/img/axe.png"
+      style="left: 300px; bottom: 10px; height: 70px; width: 40px"
+    />
+
+    <script type="text/javascript">
+      const MARGIN = 8;
+      let pid,
+        score = 0;
+      let themissile,
+        ufoElements = [];
+      let alreadypulled = false;
+      let gameTime, countdownInterval, timeRemaining;
+
+      function loadGameSettings() {
+        const numberOfUfos =
+          parseInt(localStorage.getItem('numberOfTrees')) || 1;
+        gameTime = parseInt(localStorage.getItem('gameTime')) || 60;
+
+        timeRemaining = gameTime;
+        document.getElementById(
+          'countdown'
+        ).innerText = `Time: ${timeRemaining}s`;
+
+        createUFOs(numberOfUfos);
+        startCountdown();
+      }
+
+      function createUFOs(number) {
+        for (let i = 0; i < number; i++) {
+          const ufo = document.createElement('img');
+          ufo.src = '../ressources/img/tree.png';
+          ufo.style.position = 'absolute';
+          ufo.style.bottom = `${375 + i * 50}px`;
+          ufo.style.left = `${Math.random() * window.innerWidth}px`;
+          ufo.style.width = '60px';
+          ufo.id = `ufo-${i}`;
+          ufo.className = 'ufo';
+
+          ufo.hstep = Math.random() * 5 + 2;
+          ufo.direction = Math.random() > 0.5 ? 1 : -1;
+
+          document.body.appendChild(ufo);
+          ufoElements.push(ufo);
+        }
+      }
+
+      function MoveUFO() {
+        ufoElements.forEach((ufo) => {
+          const Rlimit = window.innerWidth;
+          let hpos_ufo = parseInt(ufo.style.left),
+            width_ufo = parseInt(ufo.style.width);
+
+          hpos_ufo += ufo.hstep * ufo.direction;
+
+          if (hpos_ufo + width_ufo + MARGIN > Rlimit || hpos_ufo < 0) {
+            ufo.direction *= -1;
+          }
+
+          ufo.style.left = hpos_ufo + 'px';
+        });
+      }
+
+      function startCountdown() {
+        countdownInterval = setInterval(() => {
+          timeRemaining--;
+          document.getElementById(
+            'countdown'
+          ).innerText = `Time: ${timeRemaining}s`;
+          if (timeRemaining <= 0) {
+            clearInterval(countdownInterval);
+            endGame();
+          }
+        }, 1000);
+      }
+
+      function endGame() {
+        let finalScore = score;
+
+        if (gameTime === 120) {
+          finalScore = Math.floor(finalScore / 2);
+        } else if (gameTime === 180) {
+          finalScore = Math.floor(finalScore / 3);
+        }
+
+        const ufoPenalty = Math.max(0, ufoElements.length - 1) * 50;
+        finalScore -= ufoPenalty;
+
+        if (finalScore < 0) {
+          finalScore = 0;
+        }
+
+        alert(`Time's up! Final Score: ${finalScore}`);
+        window.location.href = 'Records.html';
+      }
+
+      function pullTrigger() {
+        if (!alreadypulled) {
+          alreadypulled = true;
+          pid = setInterval(launch, 10);
+        }
+      }
+
+      function checkForHit() {
+        return ufoElements.some((ufo) => {
+          const hpos_ufo = parseInt(ufo.style.left),
+            vpos_ufo = parseInt(ufo.style.bottom),
+            width_ufo = parseInt(ufo.style.width),
+            vpos_m = parseInt(themissile.style.bottom),
+            hpos_m = parseInt(themissile.style.left),
+            width_m = parseInt(themissile.style.width),
+            height_m = parseInt(themissile.style.height);
+
+          const hit =
+            hpos_m + width_m / 2 > hpos_ufo &&
+            hpos_m + width_m / 2 < hpos_ufo + width_ufo &&
+            vpos_m + height_m > vpos_ufo;
+
+          if (hit) {
+            ufo.src = '../ressources/gif/200w.webp';
+            setTimeout(() => {
+              ufo.src = '../ressources/img/tree.png';
+            }, 3900);
+          }
+          return hit;
+        });
+      }
+
+      function launch() {
+        let uLimit = window.innerHeight - 110,
+          vpos_m = parseInt(themissile.style.bottom),
+          vstep = 11;
+
+        if (checkForHit()) {
+          clearInterval(pid);
+          vpos_m = 0;
+          alreadypulled = false;
+          score += 100;
+          document.getElementById('points').innerText = score;
+        } else if (vpos_m < uLimit) {
+          vpos_m += vstep;
+        } else {
+          clearInterval(pid);
+          vpos_m = 0;
+          alreadypulled = false;
+          score -= 25;
+          document.getElementById('points').innerText = score;
+        }
+        themissile.style.bottom = vpos_m + 'px';
+      }
+
+      function moveMissileRight() {
+        let rLimit = window.innerWidth,
+          hpos_m = parseInt(themissile.style.left),
+          misWidth = parseInt(themissile.style.width),
+          hstep = 15;
+
+        if (hpos_m + misWidth + MARGIN < rLimit) {
+          hpos_m += hstep;
+          themissile.style.left = hpos_m + 'px';
+        }
+      }
+
+      function moveMissileLeft() {
+        let hpos_m = parseInt(themissile.style.left),
+          hstep = 15;
+
+        if (hpos_m > 0) {
+          hpos_m -= hstep;
+          themissile.style.left = hpos_m + 'px';
+        }
+      }
+
+      function keyboardController(event) {
+        switch (event.key) {
+          case 'ArrowRight':
+            moveMissileRight();
+            break;
+          case 'ArrowLeft':
+            moveMissileLeft();
+            break;
+          case ' ':
+            pullTrigger();
+            break;
+        }
+      }
+
+      window.onload = function () {
+        themissile = document.getElementById('missile');
+        loadGameSettings();
+        document.onkeydown = keyboardController;
+        setInterval(MoveUFO, 25);
+      };
+    </script>
+  </body>
+</html>
